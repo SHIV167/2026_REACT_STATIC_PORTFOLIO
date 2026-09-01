@@ -1,143 +1,16 @@
-import { useRef } from "react";
 import { motion } from "motion/react";
-import Card from "../components/Card";
-import { Globe } from "../components/globe";
-import CopyEmailButton from "../components/CopyEmailButton";
-import { Frameworks } from "../components/Frameworks";
+import { FiArrowUpRight, FiMapPin } from "react-icons/fi";
 
-const About = () => {
-  const grid2Container = useRef();
-  return (
-    <section className="c-space section-spacing" id="about">
-      <h2 className="text-heading">About Me</h2>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-6 md:auto-rows-[18rem] mt-12">
-        {/* Grid 1 */}
-        <div className="flex items-end grid-default-color grid-1">
-          <img
-            src="assets/coding-pov.png"
-            className="absolute scale-[1.75] -right-[5rem] -top-[1rem] md:scale-[3] md:left-50 md:inset-y-10 lg:scale-[2.5]"
-          />
-          <div className="z-10">
-            <p className="headtext">Hi, I'm Shiv Kumar Jha</p>
-            <p className="subtext">
-             Results-driven Full-Stack Web Developer with 8+ years of expertise in designing and deploying high-performance e-commerce solutions and digital platforms. Proven expertise across Magento 2.x, Shopify 2.0, React, and MERN stack technologies. Successfully managed 15+ live projects generating millions in e-commerce revenue.
-            </p>
-          </div>
-          <div className="absolute inset-x-0 pointer-evets-none -bottom-4 h-1/2 sm:h-1/3 bg-gradient-to-t from-indigo" />
-        </div>
-{/* Grid 2 */}
-<div className="grid-default-color grid-2">
-  <div
-    ref={grid2Container}
-    className="flex items-center justify-center w-full h-full"
-  >
-    <p className="flex items-end text-5xl text-gray-500">
-      Full-Stack Development 
-    </p>
+const skills = ["React.js", "Node.js", "Magento 2", "Shopify", "WordPress", "PHP", "MongoDB", "AWS", "UI/UX", "Performance"];
+const stats = [{ value: "8+", label: "Years experience" }, { value: "15+", label: "Live projects" }, { value: "25%", label: "Conversion uplift" }, { value: "40%", label: "Performance gains" }];
 
-    <Card
-      style={{ rotate: "75deg", top: "30%", left: "20%" }}
-      text="Frontend"
-      containerRef={grid2Container}
-    />
-    <Card
-      style={{ rotate: "-30deg", top: "60%", left: "45%" }}
-      text="Backend"
-      containerRef={grid2Container}
-    />
-    <Card
-      style={{ rotate: "90deg", bottom: "30%", left: "70%" }}
-      text="E-Commerce"
-      containerRef={grid2Container}
-    />
-    <Card
-      style={{ rotate: "-45deg", top: "55%", left: "0%" }}
-      text="APIs"
-      containerRef={grid2Container}
-    />
-    <Card
-      style={{ rotate: "20deg", top: "10%", left: "38%" }}
-      text="Database"
-      containerRef={grid2Container}
-            />
-            <Card
-              style={{ rotate: "30deg", top: "70%", left: "70%" }}
-              image="assets/logos/javascript.svg"
-              containerRef={grid2Container}
-            />
-            <Card
-              style={{ rotate: "-45deg", top: "70%", left: "25%" }}
-              image="assets/logos/html5.svg"
-              containerRef={grid2Container}
-            />
-            <Card
-              style={{ rotate: "-45deg", top: "5%", left: "10%" }}
-              image="assets/logos/css3.svg"
-              containerRef={grid2Container}
-            />
-          </div>
-        </div>
-
-        {/* Grid 3 */}
-        <div className="grid-black-color grid-3">
-          <div className="z-10 w-[50%]">
-            <p className="headtext">Time Zone</p>
-            <p className="subtext">
-              I'm based in New Delhi (Delhi-NCR), and open to remote and on-site work 
-            </p>
-          </div>
-          <figure className="absolute left-[30%] top-[10%]">
-            <Globe />
-          </figure>
-        </div>
-
-        {/* Grid 4 */}
-        <div className="grid-special-color grid-4">
-          <div className="flex flex-col items-center justify-center gap-4 size-full">
-            <p className="text-center headtext">
-              Do you want to start a project together?
-            </p>
-            <p className="text-center text-white text-lg">
-              Email me at{" "}
-              <CopyEmailButton email="jhashiv5@gmail.com" />
-            </p>
-          </div>
-        </div>
-
-{/* Grid 5 */}
-<div className="grid-default-color grid-5 relative flex items-center px-4 md:px-6">
-  <div className="relative rounded-lg flex items-center px-4 md:px-6">
-    <div className="z-10 w-[60%] text-[0.8rem] leading-normal space-y-2 pr-4 text-white">
-      <p className="text-[0.9rem] font-semibold">Technical Skillset:</p>
-      <p>
-        <strong>Frontend:</strong> React.js, HTML5, CSS3, JavaScript (ES6+), Responsive Design, UI/UX, Figma, Photoshop
-      </p>
-      <p>
-        <strong>Backend & Frameworks:</strong> PHP (MVC), Node.js, Express.js, Laravel, MongoDB, RESTful APIs
-      </p>
-      <p>
-        <strong>E-Commerce Platforms:</strong> Magento 2.x (Expert), Shopify 2.0 (Partner Certified), WooCommerce, WordPress, MERN Stack
-      </p>
-      <p>
-        <strong>Cloud & Infrastructure:</strong> AWS, Google Cloud Platform, Docker, Render.com, Git/GitHub
-      </p>
-      <p>
-        <strong>Additional Skills:</strong> Agile/Scrum, API Integration, Performance Optimization, SEO, Digital Marketing
-      </p>
-    </div>
-
-    <div className="w-[40%] flex justify-center items-center scale-95 md:scale-100">
-      <Frameworks />
-    </div>
+const About = () => <section id="about" className="section-wrap">
+  <div className="grid items-end gap-8 lg:grid-cols-[1.15fr_.85fr]"><div><p className="section-kicker">Beyond the hero</p><h2 className="section-title max-w-3xl leading-tight">I turn complex digital challenges into <span className="gradient-text">simple, high-performing experiences.</span></h2></div><p className="section-lead lg:ml-auto">Full-stack web developer specializing in scalable commerce, polished interfaces, and reliable delivery for ambitious brands.</p></div>
+  <div className="mt-12 grid gap-4 md:grid-cols-12">
+    <motion.article whileHover={{ y: -4 }} className="glass-card relative overflow-hidden rounded-[1.75rem] p-7 md:col-span-7 md:p-9"><div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-violet-600/20 blur-3xl" /><div className="relative"><span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/[.07] px-3 py-1 text-xs text-emerald-200"><span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />Available for select projects</span><h3 className="mt-10 text-2xl font-medium md:text-3xl">Hi, I’m Shiv Kumar Jha.</h3><p className="mt-4 max-w-xl leading-7 text-neutral-400">I’ve spent 8+ years designing and deploying e-commerce platforms across Magento, Shopify, WordPress, and the MERN stack—supporting 50K+ monthly visitors and millions in online revenue.</p><a href="#contact" className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-white">Let’s work together <FiArrowUpRight /></a></div></motion.article>
+    <article className="glass-card rounded-[1.75rem] p-7 md:col-span-5 md:p-9"><FiMapPin className="text-2xl text-cyan-300" /><h3 className="mt-8 text-2xl">New Delhi, India</h3><p className="mt-3 leading-7 text-neutral-400">Working remotely with teams worldwide and open to on-site opportunities across Delhi-NCR.</p><div className="mt-9 border-t border-white/10 pt-6 text-sm text-neutral-500">IST · UTC +05:30</div></article>
+    <article className="glass-card rounded-[1.75rem] p-7 md:col-span-5 md:p-9"><p className="text-sm text-neutral-500">Selected capabilities</p><div className="mt-6 flex flex-wrap gap-2">{skills.map((skill) => <span key={skill} className="rounded-full border border-white/10 bg-white/[.04] px-3.5 py-2 text-sm text-neutral-300">{skill}</span>)}</div></article>
+    <article className="glass-card grid grid-cols-2 overflow-hidden rounded-[1.75rem] md:col-span-7">{stats.map((stat) => <div key={stat.label} className="border-b border-r border-white/10 p-6 md:p-8"><strong className="text-3xl font-semibold gradient-text md:text-4xl">{stat.value}</strong><p className="mt-2 text-sm text-neutral-500">{stat.label}</p></div>)}</article>
   </div>
-</div>
-
-
-
-
-      </div>
-    </section>
-  );
-};
-
+</section>;
 export default About;

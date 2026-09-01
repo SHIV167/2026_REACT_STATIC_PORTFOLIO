@@ -42,7 +42,7 @@ const Hero = () => {
       </figure>
 
       {/* Social Icons with label */}
-      <div className="fixed bottom-8 right-8 flex flex-col items-center space-y-4 z-50 text-white">
+      <div className="absolute bottom-8 right-8 flex flex-col items-center space-y-4 z-10 text-white">
         <p className="font-semibold text-lg">Connect with me</p>
         <div className="flex flex-row space-x-6">
           <a

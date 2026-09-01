@@ -1,141 +1,45 @@
 import { useState } from "react";
-import emailjs from "@emailjs/browser";
-import Alert from "../components/Alert";
-import { Particles } from "../components/Particles";
+import toast from "react-hot-toast";
+import { FiArrowUpRight, FiCheck, FiMail, FiMapPin } from "react-icons/fi";
 
-const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertType, setAlertType] = useState("success");
-  const [alertMessage, setAlertMessage] = useState("");
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const showAlertMessage = (type, message) => {
-    setAlertType(type);
-    setAlertMessage(message);
-    setShowAlert(true);
-    setTimeout(() => {
-      setShowAlert(false);
-    }, 5000);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      console.log("Form submitted:", formData);
-      await emailjs.send(
-        "service_rpn349r",
-        "template_y4uv59e",
-        {
-  from_name: formData.name,
-  from_email: formData.email,
-  message: formData.message,
-  to_name: "Shiv Kumar Jha",
-  to_email: "jhashiv5@gmail.com",
-},
-        "zrz-U_cPLgZru1pna"
-      );
-      setIsLoading(false);
-      setFormData({ name: "", email: "", message: "" });
-      showAlertMessage("success", "Your message has been sent!");
-    } catch (error) {
-      setIsLoading(false);
-      console.log(error);
-      showAlertMessage("danger", "Something went wrong!");
-    }
-  };
-
-  return (
-    <section
-      id="contact"
-      className="relative flex items-center c-space section-spacing"
-    >
-      <Particles
-        className="absolute inset-0 -z-50"
-        quantity={100}
-        ease={80}
-        color={"#ffffff"}
-        refresh
-      />
-      {showAlert && <Alert type={alertType} text={alertMessage} />}
-      <div className="flex flex-col items-center justify-center max-w-md p-5 mx-auto border border-white/10 rounded-2xl bg-primary">
-        <div className="flex flex-col items-start w-full gap-5 mb-10">
-          <h2 className="text-heading">Let's Connect</h2>
-          <p className="font-normal text-neutral-400">
-            Interested in collaborating on projects or discussing job
-            opportunities? I’d love to hear from you.
-          </p>
-        </div>
-        <form className="w-full" onSubmit={handleSubmit}>
-          <div className="mb-5">
-            <label htmlFor="name" className="feild-label">
-              Full Name
-            </label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              className="field-input field-input-focus"
-              placeholder="John Doe"
-              autoComplete="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-5">
-            <label htmlFor="email" className="feild-label">
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              className="field-input field-input-focus"
-              placeholder="john.doe@email.com"
-              autoComplete="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-5">
-            <label htmlFor="message" className="feild-label">
-              Message
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows="4"
-              className="field-input field-input-focus"
-              placeholder="Tell me about your project or opportunity..."
-              autoComplete="off"
-              value={formData.message}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full px-1 py-3 text-lg text-center rounded-md cursor-pointer bg-radial from-lavender to-royal hover-animation"
-          >
-            {!isLoading ? "Send" : "Sending..."}
-          </button>
-        </form>
-      </div>
-    </section>
-  );
+const initialForm = { name: "", email: "", subject: "Project enquiry", message: "" };
+const validate = (values) => {
+  const errors = {};
+  if (values.name.trim().length < 2) errors.name = "Please enter your full name.";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) errors.email = "Enter a valid email address.";
+  if (!values.subject.trim()) errors.subject = "Please choose or enter a subject.";
+  if (values.message.trim().length < 20) errors.message = "Tell me a little more (at least 20 characters).";
+  return errors;
 };
 
+const Contact = () => {
+  const [form, setForm] = useState(initialForm);
+  const [errors, setErrors] = useState({});
+  const [isSending, setIsSending] = useState(false);
+  const updateField = ({ target: { name, value } }) => {
+    setForm((current) => ({ ...current, [name]: value }));
+    if (errors[name]) setErrors((current) => ({ ...current, [name]: undefined }));
+  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const nextErrors = validate(form);
+    if (Object.keys(nextErrors).length) { setErrors(nextErrors); toast.error("Please fix the highlighted fields."); return; }
+    setIsSending(true);
+    const toastId = toast.loading("Sending your message…");
+    try {
+      const response = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      toast.success(data.message, { id: toastId, duration: 6000 });
+      setForm(initialForm); setErrors({});
+    } catch (error) {
+      toast.error(error.message || "Something went wrong. Please try again.", { id: toastId, duration: 6000 });
+    } finally { setIsSending(false); }
+  };
+  return <section id="contact" className="section-wrap"><div className="glass-card overflow-hidden rounded-[2rem]"><div className="grid lg:grid-cols-[.85fr_1.15fr]">
+    <div className="relative overflow-hidden border-b border-white/10 p-8 md:p-12 lg:border-b-0 lg:border-r"><div className="absolute -left-24 -top-24 h-64 w-64 rounded-full bg-violet-600/20 blur-3xl" /><p className="section-kicker">Start a conversation</p><h2 className="section-title gradient-text">Have a project in mind?</h2><p className="section-lead">Let’s build a fast, thoughtful digital experience that works as beautifully as it looks.</p><div className="mt-10 space-y-5 text-sm text-neutral-300"><a href="mailto:jhashiv5@gmail.com" className="flex items-center gap-3 transition hover:text-white"><span className="rounded-xl bg-white/5 p-3 text-violet-300"><FiMail /></span>jhashiv5@gmail.com</a><p className="flex items-center gap-3"><span className="rounded-xl bg-white/5 p-3 text-cyan-300"><FiMapPin /></span>New Delhi, India · Available worldwide</p></div><div className="mt-10 rounded-2xl border border-emerald-400/15 bg-emerald-400/[.06] p-4 text-sm text-emerald-100"><FiCheck className="mr-2 inline" />Typically replies within 1–2 business days.</div></div>
+    <form className="p-8 md:p-12" onSubmit={handleSubmit} noValidate><div className="grid gap-6 sm:grid-cols-2"><Field label="Your name" name="name" value={form.name} error={errors.name} onChange={updateField} placeholder="Shiv Kumar" autoComplete="name" /><Field label="Email address" name="email" type="email" value={form.email} error={errors.email} onChange={updateField} placeholder="you@company.com" autoComplete="email" /></div><label className="mt-6 block field-label" htmlFor="subject">What can I help with?</label><select id="subject" name="subject" value={form.subject} onChange={updateField} className={`field-input ${errors.subject ? "field-input-error" : ""}`}><option className="bg-[#11152a]">Project enquiry</option><option className="bg-[#11152a]">Full-time opportunity</option><option className="bg-[#11152a]">Consulting</option><option className="bg-[#11152a]">Just saying hello</option></select>{errors.subject && <p className="field-error">{errors.subject}</p>}<label className="mt-6 block field-label" htmlFor="message">Tell me about it</label><textarea id="message" name="message" maxLength="1000" rows="6" value={form.message} onChange={updateField} aria-invalid={Boolean(errors.message)} className={`field-input resize-none ${errors.message ? "field-input-error" : ""}`} placeholder="A few details about your goals, scope, and timeline…" /><div className="flex justify-between"><span>{errors.message && <span className="field-error">{errors.message}</span>}</span><span className="mt-1.5 text-xs text-neutral-600">{form.message.length}/1000</span></div><button disabled={isSending} className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-5 py-3.5 font-semibold text-[#080a17] transition hover:bg-violet-100 disabled:cursor-wait disabled:opacity-60">{isSending ? "Sending…" : "Send message"}<FiArrowUpRight /></button><p className="mt-4 text-center text-xs text-neutral-600">Your details are only used to reply to this enquiry.</p></form>
+  </div></div></section>;
+};
+const Field = ({ label, error, ...props }) => <div><label className="field-label" htmlFor={props.name}>{label}</label><input id={props.name} aria-invalid={Boolean(error)} className={`field-input ${error ? "field-input-error" : ""}`} {...props} />{error && <p className="field-error">{error}</p>}</div>;
 export default Contact;
-

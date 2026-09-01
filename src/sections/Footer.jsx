@@ -1,23 +1,3 @@
-import { mySocials } from "../constants";
-const Footer = () => {
-  return (
-    <section className="flex flex-wrap items-center justify-between gap-5 pb-3 text-sm text-neutral-400 c-space">
-      <div className="mb-4 bg-gradient-to-r from-transparent via-neutral-700 to-transparent h-[1px] w-full" />
-      <div className="flex gap-2">
-        <p>Terms & Conditions</p>
-        <p>|</p>
-        <p>Privacy Policy</p>
-      </div>
-      <div className="flex gap-3">
-        {mySocials.map((social, index) => (
-          <a href={social.href} key={index}>
-            <img src={social.icon} className="w-5 h-5" alt={social.name} />
-          </a>
-        ))}
-      </div>
-      <p>© 2025 Shiv Kumar Jha. All rights reserved.</p>
-    </section>
-  );
-};
-
+import { FaGithub, FaLinkedinIn } from "react-icons/fa";
+const Footer = () => <footer className="mx-auto max-w-7xl px-5 pb-8 sm:px-10 lg:px-15"><div className="flex flex-col items-center justify-between gap-5 border-t border-white/10 pt-8 text-sm text-neutral-500 sm:flex-row"><p>© {new Date().getFullYear()} Shiv Kumar Jha. Built with care.</p><div className="flex items-center gap-3"><a className="rounded-full border border-white/10 p-3 transition hover:border-white/30 hover:text-white" href="https://github.com/SHIV167" target="_blank" rel="noreferrer" aria-label="GitHub"><FaGithub /></a><a className="rounded-full border border-white/10 p-3 transition hover:border-white/30 hover:text-white" href="https://www.linkedin.com/in/shiv-kumar-jha-91106955" target="_blank" rel="noreferrer" aria-label="LinkedIn"><FaLinkedinIn /></a></div></div></footer>;
 export default Footer;

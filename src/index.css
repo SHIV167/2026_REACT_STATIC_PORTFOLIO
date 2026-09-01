@@ -55,6 +55,19 @@ body {
   overflow-x: hidden;
 }
 
+html { scroll-behavior: smooth; }
+button, a, input, textarea { outline-color: #8b5cf6; }
+.site-shell { min-height: 100vh; background: #030412; }
+.section-wrap { @apply relative z-10 mx-auto max-w-7xl px-5 sm:px-10 lg:px-15 py-20 md:py-28; }
+.section-kicker { @apply mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-violet-300; }
+.section-title { @apply text-3xl font-semibold tracking-tight text-white md:text-5xl; }
+.section-lead { @apply mt-5 max-w-2xl text-base leading-7 text-neutral-400 md:text-lg; }
+.glass-card { @apply border border-white/10 bg-white/[0.045] backdrop-blur-xl; box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 24px 70px rgba(0,0,0,.22); }
+.ambient { position: absolute; width: 34rem; height: 34rem; border-radius: 999px; filter: blur(130px); opacity: .12; pointer-events: none; }
+.ambient-one { top: 8rem; left: -18rem; background: #7c3aed; }
+.ambient-two { top: 70rem; right: -18rem; background: #06b6d4; }
+.gradient-text { background: linear-gradient(100deg,#fff 10%,#c4b5fd 55%,#67e8f9); -webkit-background-clip:text; color:transparent; }
+
 .c-space {
   @apply sm:px-10 px-5 lg:px-15;
 }
@@ -130,5 +143,7 @@ body {
 }
 
 .field-input {
-  @apply w-full min-h-10 rounded-md px-3 py-2 text-sm bg-white/10 transition duration-200 placeholder-neutral-500 border border-white/10 mt-2;
+  @apply mt-2 w-full min-h-12 rounded-xl border border-white/10 bg-white/[0.06] px-4 py-3 text-sm text-white transition placeholder:text-neutral-600 focus:border-violet-400/70 focus:bg-white/[0.09];
 }
+.field-input-error { @apply border-red-400/70 focus:border-red-400; }
+.field-error { @apply mt-1.5 text-xs text-red-300; }

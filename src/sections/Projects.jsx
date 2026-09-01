@@ -1,41 +1,12 @@
 import { useState } from "react";
-import Project from "../components/Project";
+import { FiArrowUpRight, FiX } from "react-icons/fi";
 import { myProjects } from "../constants";
-import { motion, useMotionValue, useSpring } from "motion/react";
 
 const Projects = () => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const springX = useSpring(x, { damping: 10, stiffness: 50 });
-  const springY = useSpring(y, { damping: 10, stiffness: 50 });
-  
-  const handleMouseMove = (e) => {
-    x.set(e.clientX + 20);
-    y.set(e.clientY + 20);
-  };
-  
-  const [preview, setPreview] = useState(null);
-  
-  return (
-    <section
-      id="work"  // Added this line for navbar linking
-      onMouseMove={handleMouseMove}
-      className="relative c-space section-spacing"
-    >
-      <h2 className="text-heading">My Selected Projects</h2>
-      <div className="bg-gradient-to-r from-transparent via-neutral-700 to-transparent mt-12 h-[1px] w-full" />
-      {myProjects.map((project) => (
-        <Project key={project.id} {...project} setPreview={setPreview} />
-      ))}
-      {preview && (
-        <motion.img
-          className="fixed top-0 left-0 z-50 object-cover h-56 rounded-lg shadow-lg pointer-events-none w-80"
-          src={preview}
-          style={{ x: springX, y: springY }}
-        />
-      )}
-    </section>
-  );
+  const [selected, setSelected] = useState(null);
+  return <section id="work" className="section-wrap"><div className="flex flex-col justify-between gap-6 md:flex-row md:items-end"><div><p className="section-kicker">Selected work</p><h2 className="section-title">Projects built to perform.</h2></div><p className="max-w-md text-neutral-500">Commerce platforms, marketing experiences, and operational tools across a broad modern stack.</p></div>
+    <div className="mt-12 grid gap-5 md:grid-cols-2">{myProjects.map((project, index) => <article key={project.id} className="glass-card group overflow-hidden rounded-[1.75rem]"><button className="block w-full cursor-pointer text-left" onClick={() => setSelected(project)}><div className="relative aspect-[16/10] overflow-hidden bg-[#0b0d1b]"><img src={project.image} alt="" className="h-full w-full object-cover opacity-80 transition duration-700 group-hover:scale-105 group-hover:opacity-100" /><span className="absolute left-5 top-5 rounded-full border border-white/15 bg-black/40 px-3 py-1 text-xs backdrop-blur">0{index + 1}</span></div><div className="p-6 md:p-7"><div className="flex items-start justify-between gap-5"><div><h3 className="text-xl font-medium md:text-2xl">{project.title}</h3><p className="mt-3 line-clamp-2 text-sm leading-6 text-neutral-500">{project.description}</p></div><FiArrowUpRight className="mt-1 shrink-0 text-xl text-neutral-500 transition group-hover:text-violet-300" /></div><div className="mt-6 flex flex-wrap gap-2">{project.tags.map((tag) => <span key={tag.id} className="text-xs text-violet-300">{tag.name}</span>)}</div></div></button></article>)}</div>
+    {selected && <div className="fixed inset-0 z-[100] grid place-items-center overflow-y-auto bg-[#030412]/85 p-4 backdrop-blur-xl" onClick={() => setSelected(null)}><article className="glass-card relative my-8 max-w-2xl overflow-hidden rounded-[1.75rem]" onClick={(e) => e.stopPropagation()}><button className="absolute right-4 top-4 z-10 rounded-full bg-black/60 p-3" onClick={() => setSelected(null)} aria-label="Close"><FiX /></button><img src={selected.image} alt={selected.title} className="aspect-[16/9] w-full object-cover" /><div className="p-7"><h3 className="text-2xl font-medium">{selected.title}</h3><p className="mt-3 text-neutral-400">{selected.description}</p><ul className="mt-6 space-y-3">{selected.subDescription.map((item) => <li key={item} className="flex gap-3 text-sm text-neutral-400"><span className="text-violet-300">—</span>{item}</li>)}</ul><a href={selected.href} target="_blank" rel="noreferrer" className="mt-7 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black">View project <FiArrowUpRight /></a></div></article></div>}
+  </section>;
 };
-
 export default Projects;
