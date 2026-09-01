@@ -28,7 +28,10 @@ const Contact = () => {
     const toastId = toast.loading("Sending your message…");
     try {
       const response = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
-      const data = await response.json();
+      const contentType = response.headers.get("content-type") || "";
+      const data = contentType.includes("application/json")
+        ? await response.json()
+        : { message: response.ok ? "Your message was received." : "The contact service is temporarily unavailable." };
       if (!response.ok) throw new Error(data.message);
       toast.success(data.message, { id: toastId, duration: 6000 });
       setForm(initialForm); setErrors({});
