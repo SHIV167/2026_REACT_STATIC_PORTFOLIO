@@ -64,7 +64,7 @@ const Hero = () => {
             <FaGithub />
           </a>
           <a
-            href="/assets/Shiv_Kumar_Jha_Full_Stack_Developer.pdf"
+            href="/assets/2026_SHIV_RESUME_PREMIUM_OPTIMIZED.pdf"
             download
             className="text-3xl text-green-500 hover:text-green-700 transition"
             aria-label="Download Resume"
